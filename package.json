@@ -2,18 +2,42 @@
   "name": "calculator-electron",
   "version": "0.1.0",
   "private": true,
+  "homepage": "./",
+  "main": "electron/main.js",
+  "build": {
+    "appId": "some.id.ofyours",
+    "directories": {
+      "buildResources": "assets"
+    },
+    "win": {
+      "category": "your.app.category.type",
+      "iconUrl": "path-to-icon.png"
+    },
+    "mac": {
+      "category": "your.app.category.type",
+      "iconUrl": "path-to-icon.png"
+    }
+  },
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
+    "electron": "^9.0.3",
+    "electron-is-dev": "^1.2.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.1"
+    "react-redux": "^7.2.0",
+    "react-scripts": "3.4.1",
+    "redux": "^4.0.5",
+    "redux-devtools-extension": "^2.13.8"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "electron": "NODE_ENV=dev nodemon --exec \"\"electron .\"\"",
+    "electron-build": "electron-builder",
+    "start": "BROWSER=none npm run react-start",
+    "react-start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "react-test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -30,5 +54,11 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "electron-builder": "^22.7.0",
+    "electron-devtools-installer": "^3.0.0",
+    "electron-reload": "^1.5.0",
+    "nodemon": "^2.0.4"
   }
 }
