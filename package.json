@@ -31,7 +31,7 @@
   },
   "scripts": {
     "electron": "NODE_ENV=dev nodemon --exec \"\"electron .\"\"",
-    "electron-pack": "electron-builder -c.extraMetadata.main=build/electron.js",
+    "electron-pack": "electron-builder --win --mac -c.extraMetadata.main=build/electron.js",
     "electron-build": "electron-builder",
     "start": "BROWSER=none npm run react-start",
     "react-start": "react-scripts start",
