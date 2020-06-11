@@ -2,10 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {
   SET_OPERATION,
-  ADD_NUMBERS,
-  SUBTRACT_NUMBERS,
-  MULTIPLY_NUMBERS,
-  DIVIDE_NUMBERS,
   CLEAR_DATA,
   TOGGLE_HISTORY,
   COMPLETE_CALCULATION,
@@ -27,46 +23,22 @@ const OpButton = ({ currentState, dispatch, operation }) => {
     } else if (operation === 'H') {
       dispatch({ type: TOGGLE_HISTORY });
     } else if (currentState.hasOperation && operation !== '=') {
-      if (currentState.operation === '+') {
-        dispatch({ type: ADD_NUMBERS });
+      let operand1 = currentState.operand1;
+      let operand2 = currentState.operand2;
+      let currentOperation = currentState.operation;
+      ipcRenderer.send('calculate', operand1, operand2, currentOperation);
+      ipcRenderer.on('result', (event, result) => {
+        dispatch({ type: COMPLETE_CALCULATION, payload: result });
         dispatch({ type: SET_OPERATION, payload: operation });
-      }
-      if (currentState.operation === '-') {
-        dispatch({ type: SUBTRACT_NUMBERS });
-        dispatch({ type: SET_OPERATION, payload: operation });
-      }
-      if (currentState.operation === '*') {
-        dispatch({ type: MULTIPLY_NUMBERS });
-        dispatch({ type: SET_OPERATION, payload: operation });
-      }
-      if (currentState.operation === '/') {
-        dispatch({ type: DIVIDE_NUMBERS });
-        dispatch({ type: SET_OPERATION, payload: operation });
-      }
+      });
     } else if (currentState.operation && operation === '=') {
       let operand1 = currentState.operand1;
       let operand2 = currentState.operand2;
-      let operation = currentState.operation;
-      ipcRenderer.send('calculate', operand1, operand2, operation);
+      let currentOperation = currentState.operation;
+      ipcRenderer.send('calculate', operand1, operand2, currentOperation);
       ipcRenderer.on('result', (event, result) => {
         dispatch({ type: COMPLETE_CALCULATION, payload: result });
       });
-
-      // if (currentState.operation === '+') {
-      //   ipcRenderer.send('calculate', operand1, operand2, operation);
-      //   ipcRenderer.on('result', (event, result) => {
-      //     dispatch({ type: ADD_NUMBERS, payload: result });
-      //   });
-      // }
-      // if (currentState.operation === '-') {
-      //   dispatch({ type: SUBTRACT_NUMBERS });
-      // }
-      // if (currentState.operation === '*') {
-      //   dispatch({ type: MULTIPLY_NUMBERS });
-      // }
-      // if (currentState.operation === '/') {
-      //   dispatch({ type: DIVIDE_NUMBERS });
-      // }
     }
   };
   return (

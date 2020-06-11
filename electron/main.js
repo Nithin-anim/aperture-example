@@ -14,8 +14,8 @@ let result;
 
 function createWindow() {
   mainWindow = new BrowserWindow({
-    width: 700,
-    height: 600,
+    width: 400,
+    height: 400,
     webPreferences: {
       nodeIntegration: true,
       preload: path.join(__dirname, 'preload.js'),
@@ -63,6 +63,5 @@ ipcMain.on('calculate', (event, operand1, operand2, operation) => {
   } else if (operation === '/') {
     result = Math.ceil(operand1 / operand2);
   }
-  console.log('RESULT=' + result);
   mainWindow.webContents.send('result', result);
 });

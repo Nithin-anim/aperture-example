@@ -1,10 +1,6 @@
 import {
   SET_OPERAND,
   SET_OPERATION,
-  ADD_NUMBERS,
-  SUBTRACT_NUMBERS,
-  MULTIPLY_NUMBERS,
-  DIVIDE_NUMBERS,
   CLEAR_DATA,
   TOGGLE_HISTORY,
   COMPLETE_CALCULATION,
@@ -70,68 +66,6 @@ export default (state = initialState, action) => {
         operation: null,
         hasFirstOperand: false,
         hasOperation: false,
-      };
-
-    case ADD_NUMBERS:
-      // let add_result = state.operand1 + state.operand2;
-      // let add_obj = {
-      //   op1: state.operand1,
-      //   op2: state.operand2,
-      //   operation: state.operation,
-      //   result: add_result,
-      // };
-
-      return {
-        ...state,
-        result: action.payload,
-        displayValue: action.payload,
-        prevResult: action.payload,
-        operand1: 0,
-        operand2: 0,
-        operation: null,
-        hasFirstOperand: false,
-        hasOperation: false,
-        // history: [...state.history, action.payload],
-      };
-
-    case SUBTRACT_NUMBERS:
-      return {
-        ...state,
-        result: action.payload,
-        displayValue: action.payload,
-        prevResult: action.payload,
-        operand1: 0,
-        operand2: 0,
-        operation: null,
-        hasFirstOperand: false,
-        hasOperation: false,
-        // history: [...state.history, sub_obj],
-      };
-
-    case MULTIPLY_NUMBERS:
-      return {
-        ...state,
-        result: action.payload,
-        displayValue: action.payload,
-        prevResult: action.payload,
-        operand1: 0,
-        operand2: 0,
-        operation: null,
-        hasFirstOperand: false,
-        // history: [...state.history, mul_obj],
-      };
-
-    case DIVIDE_NUMBERS:
-      return {
-        ...state,
-        result: action.payload,
-        displayValue: action.payload,
-        prevResult: action.payload,
-        operand1: 0,
-        operand2: 0,
-        operation: null,
-        hasFirstOperand: false,
-        // history: [...state.history, div_obj],
       };
 
     case CLEAR_DATA:

@@ -6,7 +6,7 @@
 
 .container {
   margin: auto;
-  width: 600px;
+  width: 400px;
   margin-top: 20px;
 }
 
@@ -24,7 +24,7 @@
 
 .input-area {
   border: 1px solid grey;
-  margin-left: 210px;
+  margin-left: 140px;
   margin-bottom: 15px;
   padding: 10px;
   text-align: center;

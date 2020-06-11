@@ -4,7 +4,6 @@ import Buttons from './components/Buttons';
 import DisplayArea from './components/DisplayArea';
 import { Provider } from 'react-redux';
 import store from './store';
-// import History from './components/History';
 
 function App() {
   return (
@@ -13,7 +12,6 @@ function App() {
         <div className='container'>
           <DisplayArea />
           <Buttons />
-          {/* <History /> */}
         </div>
       </div>
     </Provider>
