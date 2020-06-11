@@ -2,12 +2,14 @@ const electron = require('electron');
 const { app, BrowserWindow, ipcMain } = electron;
 const path = require('path');
 const isDev = require('electron-is-dev');
-require('electron-reload');
-const {
-  default: installExtension,
-  REACT_DEVELOPER_TOOLS,
-  REDUX_DEVTOOLS,
-} = require('electron-devtools-installer');
+if (!app.isPackaged) {
+  require('electron-reload');
+  const {
+    default: installExtension,
+    REACT_DEVELOPER_TOOLS,
+    REDUX_DEVTOOLS,
+  } = require('electron-devtools-installer');
+}
 
 let mainWindow;
 let result;
@@ -35,11 +37,13 @@ function createWindow() {
 
 app.on('ready', createWindow);
 
-app.whenReady().then(() => {
-  installExtension([REDUX_DEVTOOLS, REACT_DEVELOPER_TOOLS])
-    .then((name) => console.log(`Added Extension:  ${name}`))
-    .catch((err) => console.log('An error occurred: ', err));
-});
+if (!app.isPackaged) {
+  app.whenReady().then(() => {
+    installExtension([REDUX_DEVTOOLS, REACT_DEVELOPER_TOOLS])
+      .then((name) => console.log(`Added Extension:  ${name}`))
+      .catch((err) => console.log('An error occurred: ', err));
+  });
+}
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {

@@ -3,40 +3,40 @@
   "version": "0.1.0",
   "private": true,
   "homepage": "./",
-  "main": "electron/main.js",
+  "author": "Nithin Rauj",
+  "description": "An calculator based on electron and CRA",
+  "main": "public/electron.js",
   "build": {
-    "appId": "some.id.ofyours",
+    "files": [
+      "build/**/*",
+      "node_modules/**/*",
+      "./public/electron.js"
+    ],
+    "appId": "com.app.calculator",
     "directories": {
       "buildResources": "assets"
-    },
-    "win": {
-      "category": "your.app.category.type",
-      "iconUrl": "path-to-icon.png"
-    },
-    "mac": {
-      "category": "your.app.category.type",
-      "iconUrl": "path-to-icon.png"
     }
   },
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
-    "electron": "^9.0.3",
     "electron-is-dev": "^1.2.0",
     "react": "^16.13.1",
+    "react-scripts": "3.4.1",
     "react-dom": "^16.13.1",
     "react-redux": "^7.2.0",
-    "react-scripts": "3.4.1",
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.8"
   },
   "scripts": {
     "electron": "NODE_ENV=dev nodemon --exec \"\"electron .\"\"",
+    "electron-pack": "electron-builder -c.extraMetadata.main=build/electron.js",
     "electron-build": "electron-builder",
     "start": "BROWSER=none npm run react-start",
     "react-start": "react-scripts start",
     "build": "react-scripts build",
+    "preelectron-pack": "npm run build",
     "react-test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
@@ -56,6 +56,7 @@
     ]
   },
   "devDependencies": {
+    "electron": "^9.0.3",
     "electron-builder": "^22.7.0",
     "electron-devtools-installer": "^3.0.0",
     "electron-reload": "^1.5.0",
