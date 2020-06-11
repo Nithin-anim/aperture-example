@@ -16,7 +16,7 @@
 }
 
 .row .button {
-  flex-basis: 10%;
+  flex-basis: 20%;
   border: 1px solid black;
   text-align: center;
   padding: 10px;
@@ -24,11 +24,11 @@
 
 .input-area {
   border: 1px solid grey;
-  margin-left: 140px;
+  margin-left: 80px;
   margin-bottom: 15px;
   padding: 10px;
   text-align: center;
-  width: 30%;
+  width: 60%;
 }
 
 .history-item {

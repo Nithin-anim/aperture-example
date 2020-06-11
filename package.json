@@ -10,7 +10,9 @@
     "files": [
       "build/**/*",
       "node_modules/**/*",
-      "./public/electron.js"
+      "./public/electron.js",
+      "assets/icon-mac.png",
+      "assets/icon-win.png"
     ],
     "appId": "com.app.calculator",
     "directories": {

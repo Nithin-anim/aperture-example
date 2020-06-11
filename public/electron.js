@@ -1,5 +1,5 @@
 const electron = require('electron');
-const { app, BrowserWindow, ipcMain } = electron;
+const { app, BrowserWindow, ipcMain, Tray, nativeImage, Menu } = electron;
 const path = require('path');
 const isDev = require('electron-is-dev');
 if (!app.isPackaged) {
@@ -12,12 +12,16 @@ if (!app.isPackaged) {
 }
 
 let mainWindow;
+let tray;
 let result;
 
 function createWindow() {
   mainWindow = new BrowserWindow({
     width: 400,
-    height: 400,
+    height: 450,
+    show: false,
+    frame: false,
+    resizable: false,
     webPreferences: {
       nodeIntegration: true,
       preload: path.join(__dirname, 'preload.js'),
@@ -30,12 +34,54 @@ function createWindow() {
       : `file://${path.join(__dirname, '../build/index.html')}`
   );
 
-  mainWindow.on('closed', () => {
-    mainWindow = null;
+  // mainWindow.on('closed', () => {
+  //   mainWindow = null;
+  //   app.quit();
+  // });
+
+  mainWindow.on('blur', () => {
+    mainWindow.hide();
+  });
+
+  const icon = process.platform === 'win32' ? 'icon-win.png' : 'icon-mac.png';
+  // const iconPath = path.join('assets', icon);
+  // console.log('ICON PATH', path.join('assets', icon));
+  const iconPath =
+    process.env.NODE_ENV !== 'production'
+      ? path.join(`assets/${icon}`)
+      : path.join(__dirname, `../app.asar/${icon}`);
+
+  tray = new Tray(nativeImage.createFromPath(iconPath));
+  tray.on('click', (event, bounds) => {
+    const { x, y } = bounds;
+    const { height, width } = mainWindow.getBounds();
+
+    if (!mainWindow.isVisible()) {
+      const yPosition = process.platform === 'darwin' ? y : y - height;
+      mainWindow.setBounds({
+        x: x - width / 2,
+        y: yPosition,
+        width,
+        height,
+      });
+      mainWindow.show();
+    } else {
+      mainWindow.hide();
+    }
+  });
+  tray.on('right-click', () => {
+    const menuConfig = Menu.buildFromTemplate([
+      {
+        label: 'Quit',
+        click: () => app.quit(),
+      },
+    ]);
+    tray.popUpContextMenu(menuConfig);
   });
 }
 
 app.on('ready', createWindow);
+app.dock.hide();
 
 if (!app.isPackaged) {
   app.whenReady().then(() => {
