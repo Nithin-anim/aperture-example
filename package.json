@@ -17,6 +17,13 @@
     "appId": "com.app.calculator",
     "directories": {
       "buildResources": "assets"
+    },
+    "mac": {
+      "entitlements": "build/entitlements.mac.plist",
+      "extendInfo": {
+        "NSCameraUsageDescription": "This app requires camera access to record video.",
+        "NSMicrophoneUsageDescription": "This app requires microphone access to record audio."
+      }
     }
   },
   "dependencies": {
@@ -38,7 +45,7 @@
     "start": "BROWSER=none npm run react-start",
     "react-start": "react-scripts start",
     "build": "react-scripts build",
-    "preelectron-pack": "npm run build",
+    "preelectron-pack": "npm run build && cp -r assets build/assets",
     "react-test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
