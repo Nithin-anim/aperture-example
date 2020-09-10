@@ -5,11 +5,13 @@ const {
   ipcMain,
   Tray,
   nativeImage,
-  Menu,
-  systemPreferences,
+  Menu
 } = electron;
+const fs = require('fs');
 const path = require('path');
 const isDev = require('electron-is-dev');
+const aperture = require('@nithin1712/aperture')();
+
 if (!app.isPackaged) {
   require('electron-reload');
   const {
@@ -62,12 +64,6 @@ function createWindow() {
     'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAB6klEQVR42mNkoBAwgghdYzMBExuH6P///7OgK7h/9w7DfyBE0cTI+OfhrRtLH9y6/gFsgJNvUK6Tb/AkbDacOHqAgZGJFaQJRfzWxTN5N86enAwWtXb1KvIMje7FZQAICPALMvz6/Yfh77+/DL+B9NXTx4rvXj7fh2KAnIQog5ggP1jDlbsPGX78+g03wMXGikFDRZlh3qoNDD9+/sRuAD4XOFtbgr1x9soNho+fv5BuAHK4MzKxMFw7c5xIA84dY/jsos3wRVuK4R8HCwP70w8MgvtuMtxavRlowAWIAQY2TkU23kEYBvxlY2I44SbG8FWcF0Wc6R8wWmdtbbpRN7kerwG3zUQY7usKYk1ATP8ZPrxIaZXDMMDeSIfh4LkrDMBExXAkVIHhOz8bAz8DC0MgizhY481/XxmO//sAZr+unemPYoCqnBSDtb4Ww/2nLxgOnL3MsD9SgeEPN24DXhRNiMNwAciQ24+egV1w2lmc4YMiP1YvAOX/P7TPMAAboG/lkG/rGzIBXdErQSaGCwGKQA8zYRjwefPhrc+TW3zBBrBzckqo6pukMoEiGNkWIHyrLizCWRUdyyzAywuz+cvmIztf5PfE/P/64y0jAxGAkZtTgstK15mJh4v3x+W753/feXwGFMsgOQDKr+ZeSg5p3wAAAABJRU5ErkJggg==';
   const icon = nativeImage.createFromDataURL(base64Icon);
   tray = new Tray(icon);
-
-  console.log(
-    'CAMERA ACCESS',
-    systemPreferences.getMediaAccessStatus('camera')
-  );
-  console.log('PERMISSION', askForMediaAccess());
   tray.on('click', (event, bounds) => {
     const { x, y } = bounds;
     const { height, width } = mainWindow.getBounds();
@@ -132,27 +128,22 @@ ipcMain.on('calculate', (event, operand1, operand2, operation) => {
   mainWindow.webContents.send('result', result);
 });
 
-async function askForMediaAccess() {
-  try {
-    // if (platform !== "darwin") {
-    //   return true;
-    // }
+ipcMain.on('START_RECORDING', async () => {
+  await aperture.startRecording();
+  console.log('Recording started')
+  await aperture.isFileReady;
+});
 
-    const status = await systemPreferences.getMediaAccessStatus('camera');
-    console.log('Current camera access status:', status);
+ipcMain.on('STOP_RECORDING', async () => {
+  const fp = await aperture.stopRecording();
+  console.log('Recording ended');
+  fs.renameSync(fp, 'recording.mp4');
+});
 
-    if (status === 'not-determined') {
-      const success = await systemPreferences.askForMediaAccess('camera');
-      console.log(
-        'Result of camera access:',
-        success.valueOf() ? 'granted' : 'denied'
-      );
-      return success.valueOf();
-    }
+ipcMain.on('PAUSE_RECORDING', async () => {
+  await aperture.pause().then(() => console.log('Paused'));
+});
 
-    return status === 'granted';
-  } catch (error) {
-    console.error('Could not get camera permission:', error.message);
-  }
-  return false;
-}
+ipcMain.on('RESUME_RECORDING', async () => {
+  await aperture.resume().then(() => console.log('Resumed'));
+});

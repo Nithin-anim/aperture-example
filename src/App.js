@@ -1,20 +1,12 @@
 import React from 'react';
 import './App.css';
-import Buttons from './components/Buttons';
-import DisplayArea from './components/DisplayArea';
-import { Provider } from 'react-redux';
-import store from './store';
+import Recorder from './Recorder';
 
 function App() {
   return (
-    <Provider store={store}>
-      <div className='App'>
-        <div className='container'>
-          <DisplayArea />
-          <Buttons />
-        </div>
-      </div>
-    </Provider>
+    <div className='App' style={{ height: '400px' }}>
+      <Recorder />
+    </div>
   );
 }
 
